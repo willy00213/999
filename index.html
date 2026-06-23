@@ -426,6 +426,16 @@
             padding-right: 5px; /* 平衡視覺置中 */
         }
         
+        /* 新增：專屬紅色濾鏡，強制將 Emoji 轉換為紅色系 */
+        .capsule-icon.filter-red {
+            filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.15)) grayscale(1) sepia(1) hue-rotate(-50deg) saturate(6) contrast(1.2);
+        }
+        
+        /* 新增：專屬金色濾鏡，強制將 Emoji 轉換為耀眼金屬色 */
+        .capsule-icon.filter-gold {
+            filter: drop-shadow(0 15px 15px rgba(0, 0, 0, 0.15)) sepia(1) saturate(6) hue-rotate(5deg) brightness(1.2) contrast(1.1);
+        }
+        
         @keyframes float-icon {
             0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
             50% { transform: translateY(-12px) rotate(3deg) scale(1.05); }
@@ -701,7 +711,7 @@
                 <div class="deco-circle circle-bottom"></div>
                 <div class="deco-star star-tr">✨</div>
                 <div class="deco-star star-bl">💫</div>
-                <span class="capsule-icon">📖🕊️</span>
+                <span class="capsule-icon">📖✝️</span>
                 <div class="capsule-subtext">第 1 題 / 30 秒挑戰</div>
             </div>
         </div>
@@ -728,7 +738,8 @@
                 <div class="deco-circle circle-bottom"></div>
                 <div class="deco-star star-tr">✨</div>
                 <div class="deco-star star-bl">💫</div>
-                <span class="capsule-icon">🎒🧣</span>
+                <!-- 加上 filter-red 類別，讓預設藍色的內褲帽子變成紅色 -->
+                <span class="capsule-icon filter-red">🩲🧢</span>
                 <div class="capsule-subtext">第 2 題 / 30 秒挑戰</div>
             </div>
         </div>
@@ -782,7 +793,8 @@
                 <div class="deco-circle circle-bottom"></div>
                 <div class="deco-star star-tr">✨</div>
                 <div class="deco-star star-bl">💫</div>
-                <span class="capsule-icon">✝️⛪</span>
+                <!-- 移除金屬濾鏡，換上鑽石與十字架組合，展現天然寶石光澤 -->
+                <span class="capsule-icon">💎✝️</span>
                 <div class="capsule-subtext">第 4 題 / 30 秒挑戰</div>
             </div>
         </div>
@@ -809,7 +821,7 @@
                 <div class="deco-circle circle-bottom"></div>
                 <div class="deco-star star-tr">✨</div>
                 <div class="deco-star star-bl">💫</div>
-                <span class="capsule-icon">👟👞</span>
+                <span class="capsule-icon">👟🦶</span>
                 <div class="capsule-subtext">第 5 題 / 30 秒挑戰</div>
             </div>
         </div>
@@ -836,7 +848,7 @@
                 <div class="deco-circle circle-bottom"></div>
                 <div class="deco-star star-tr">✨</div>
                 <div class="deco-star star-bl">💫</div>
-                <span class="capsule-icon">🧮👴🏼</span>
+                <span class="capsule-icon">🧮🧍</span>
                 <div class="capsule-subtext">第 6 題 / 30 秒挑戰</div>
             </div>
         </div>
