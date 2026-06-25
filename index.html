@@ -1015,12 +1015,15 @@
             nextSlide(slideId);
         }
 
-        // 優化後的隨機抽號功能
+        // 優化後的隨機抽號功能（加入跑馬燈特效）
         function pickRandomNumber() {
-            // 如果正在等待 800ms 的過渡動畫，防止使用者重複點擊抽號
+            // 如果正在等待過渡動畫，防止使用者重複點擊抽號
             if (isPicking) return; 
 
-            document.querySelectorAll('.grid-btn').forEach(btn => btn.classList.remove('highlighted'));
+            document.querySelectorAll('.grid-btn').forEach(btn => {
+                btn.classList.remove('highlighted');
+                btn.classList.remove('super-highlighted');
+            });
             
             // 邏輯 1：建立號碼池（絕對過濾掉已經擁有 visited 的按鈕）
             const availableButtons = [];
@@ -1041,25 +1044,56 @@
             // 鎖定抽號按鈕狀態
             isPicking = true;
             document.getElementById('randomBtnId').disabled = true;
+            
+            const resultDisplay = document.getElementById('randomResult');
+            let rollCount = 0;
+            const maxRolls = 15; // 跑馬燈切換次數 (15次 * 80ms = 約 1.2 秒)
 
-            const randomIndex = Math.floor(Math.random() * availableButtons.length);
-            const selected = availableButtons[randomIndex];
-
-            // 先給予放大高亮視覺提示
-            selected.element.classList.add('super-highlighted');
-            document.getElementById('randomResult').textContent = "🎯 抽中：【 " + selected.id + " 】號！";
-
-            // 邏輯 2：3000 毫秒後自動標記並進入任務
-            setTimeout(() => {
-                selected.element.classList.remove('super-highlighted');
+            // 邏輯 2：開始跑馬燈特效
+            const rollInterval = setInterval(() => {
+                // 清除所有暫時高亮
+                availableButtons.forEach(b => b.element.classList.remove('highlighted'));
                 
-                // 觸發原有的 click 事件，這會自動套用 visited 標籤並跳轉到題目畫面 (保留原有功能)
-                selected.element.click(); 
+                // 隨機挑選一個做閃爍提示
+                const tempIndex = Math.floor(Math.random() * availableButtons.length);
+                const tempBtn = availableButtons[tempIndex];
+                tempBtn.element.classList.add('highlighted');
+                
+                // 變換提示區的骰子與數字
+                const diceIcons = ['🎲', '🎰', '🎯', '✨'];
+                const randomIcon = diceIcons[Math.floor(Math.random() * diceIcons.length)];
+                resultDisplay.textContent = `${randomIcon} 抽取中... ${tempBtn.id}`;
 
-                // 解除狀態鎖定
-                isPicking = false;
-                document.getElementById('randomBtnId').disabled = false;
-            }, 3000);
+                rollCount++;
+
+                // 跑馬燈結束，決定最終號碼
+                if (rollCount >= maxRolls) {
+                    clearInterval(rollInterval); // 停止動畫
+                    
+                    // 清理暫時狀態
+                    availableButtons.forEach(b => b.element.classList.remove('highlighted'));
+
+                    // 決定真正的最終號碼
+                    const finalIndex = Math.floor(Math.random() * availableButtons.length);
+                    const selected = availableButtons[finalIndex];
+
+                    // 給予最終放大高亮視覺提示
+                    selected.element.classList.add('super-highlighted');
+                    resultDisplay.textContent = "🎯 抽中：【 " + selected.id + " 】號！";
+
+                    // 邏輯 3：3000 毫秒後自動標記並進入任務
+                    setTimeout(() => {
+                        selected.element.classList.remove('super-highlighted');
+                        
+                        // 觸發原有的 click 事件，自動套用 visited 標籤並跳轉到題目畫面
+                        selected.element.click(); 
+
+                        // 解除狀態鎖定
+                        isPicking = false;
+                        document.getElementById('randomBtnId').disabled = false;
+                    }, 3000);
+                }
+            }, 80); // 每 80 毫秒切換一次，產生快速跑動的視覺感
         }
 
         function startTimer(timerUi, seconds) {
